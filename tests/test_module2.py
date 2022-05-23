@@ -22,10 +22,10 @@ def test_task1_module2():
             if isinstance(x, ast.ClassDef):
                 if x.name == 'BudgetList':
                     class_found = True
-                    
+
     except Exception as e:
             pass
-    
+
     assert path.exists('budget/BudgetList.py'), 'Did you create a file named `BudgetList.py` in the `budget/` folder?'
     assert class_found, 'Did you create a `class BudgetList` in `BudgetList.py`?'
 
@@ -51,7 +51,7 @@ def test_task2_module2():
                             if (y.args.args[0].arg == 'self' and y.args.args[1].arg == 'budget'):
                                 args_found = True
                             child_assign = utils.get_assignments_from_child(y)
-                            # BudgetList __init__ assignments = ['self:budget:budget', 'self:sum_expenses:0', 
+                            # BudgetList __init__ assignments = ['self:budget:budget', 'self:sum_expenses:0',
                             # 'self:expenses', 'self:sum_overages:0', 'self:overages']
                             if ('self:budget:budget' in child_assign):
                                 self_budget_assign_found = True
@@ -62,7 +62,7 @@ def test_task2_module2():
 
     except Exception as e:
             pass
-    
+
     assert init_found, 'Did you create the `__init__` method in the `BudgetList` class?'
     assert args_found, 'The `__init__` method should take `self` and `budget` as parameters.'
     assert self_budget_assign_found, 'Did you initialize `self.budget` to `budget` in `__init__`()?'
@@ -81,13 +81,13 @@ def test_task3_module2():
                     for y in x.body:
                         if (isinstance(y, ast.FunctionDef) and
                                 y.name == 'append' and
-                                y.args.args[0].arg=='self' and 
+                                y.args.args[0].arg=='self' and
                                 y.args.args[1].arg=='item'):
-                            append_def_found = True                
+                            append_def_found = True
     except Exception as e:
             # print('append e = ' + str(e))
             pass
-    
+
     assert append_def_found, 'Did you define the method `def append(self, item)`?'
 
 
@@ -106,7 +106,7 @@ def test_task4_module2():
     # if body
     sum_exp_inc_found = False
     exp_append_item_found = False
-    
+
     try:
         for x in load_ast_tree('budget/BudgetList.py').body:
             if isinstance(x, ast.ClassDef):
@@ -114,7 +114,7 @@ def test_task4_module2():
                     for y in x.body:
                         if (isinstance(y, ast.FunctionDef) and
                                 y.name == 'append' and
-                                y.args.args[0].arg=='self' and 
+                                y.args.args[0].arg=='self' and
                                 y.args.args[1].arg=='item'):
                             append_def_found = True
                             # print("y.body = " + str(y.body))
@@ -140,24 +140,24 @@ def test_task4_module2():
                                         aug_assign = utils.get_augassignments_from_child(item)
                                         assign = utils.get_assignments_from_child(item)
                                         func_call = utils.get_calls_from_child(item)
-                                        
-                                        if ('self:sum_expenses:item' in aug_assign or 
+
+                                        if ('self:sum_expenses:item' in aug_assign or
                                             'self:sum_expenses:self:sum_expenses:item' in assign):
                                             sum_exp_inc_found = True
                                         if ('self:expenses:append:item' in func_call):
                                             exp_append_item_found = True
 
 
-                                            
+
     except Exception as e:
             # print('append e = ' + str(e))
             pass
-    
+
     assert append_def_found, 'Did you define the method `def append(self, item)`?'
     assert self_found and sum_expenses_found and op_add_found and lt_found and self_budget_found, 'Add an `if` statement that checks if `self.sum_expenses+item < self.budget`.'
     assert exp_append_item_found, 'Inside the if statement, did you call `self.expenses.append(item)`?'
     assert sum_exp_inc_found, 'Inside the if statement, did you call `self.sum_expenses += item`?'
-    
+
 
 # Add overages in append()
 @pytest.mark.test_task5_module2
@@ -167,7 +167,7 @@ def test_task5_module2():
     # else body
     sum_over_inc_found = False
     over_append_item_found = False
-    
+
     try:
         for x in load_ast_tree('budget/BudgetList.py').body:
             if isinstance(x, ast.ClassDef):
@@ -175,7 +175,7 @@ def test_task5_module2():
                     for y in x.body:
                         if (isinstance(y, ast.FunctionDef) and
                                 y.name == 'append' and
-                                y.args.args[0].arg=='self' and 
+                                y.args.args[0].arg=='self' and
                                 y.args.args[1].arg=='item'):
                             append_def_found = True
                             # print("y.body = " + str(y.body))
@@ -187,20 +187,20 @@ def test_task5_module2():
                                         aug_assign = utils.get_augassignments_from_child(item)
                                         func_call = utils.get_calls_from_child(item)
                                         assign = utils.get_assignments_from_child(item)
-                                        
-                                        if ('self:sum_overages:item' in aug_assign or 
+
+                                        if ('self:sum_overages:item' in aug_assign or
                                             'self:sum_overages:self:sum_overages:item' in assign):
                                             sum_over_inc_found = True
                                         if ('self:overages:append:item' in func_call):
-                                            over_append_item_found = True                       
+                                            over_append_item_found = True
     except Exception as e:
             # print('append e = ' + str(e))
             pass
-    
+
     assert append_def_found, 'Did you define the method `def append(self, item)`?'
     assert over_append_item_found, 'Inside the else statement, did you call `self.overages.append(item)`?'
     assert sum_over_inc_found, 'Inside the else statement, did you call `self.sum_overages+=item`?'
-    
+
 
 # Create __len__()
 @pytest.mark.test_task6_module2
@@ -215,11 +215,11 @@ def test_task6_module2():
                         if (isinstance(y, ast.FunctionDef) and
                                 y.name == '__len__' and
                                 y.args.args[0].arg=='self'):
-                            len_def_found = True                
+                            len_def_found = True
     except Exception as e:
             # print('__len__ e = ' + str(e))
             pass
-    
+
     assert len_def_found, 'Did you define the method `def __len__(self)`?'
     # TODO test for return
 
@@ -242,7 +242,7 @@ def test_task7_module2():
     except Exception as e:
             # print('next e = ' + str(e))
             pass
-    
+
     assert main_func_found, 'Did you define a `main()` function?'
     assert budgetlist_assign_found, 'Did you define a `myBudgetList` variable assigned to `BudgetList(1200)`?'
 
@@ -265,7 +265,7 @@ def test_task9_module2():
                 for y in x.body:
                     assignments = utils.get_assignments_from_child(y)
                     calls = utils.get_calls_from_child(y)
-                    
+
                     if 'expenses:Expense:Expenses' in assignments:
                         expenses_assign_found = True
                     if 'expenses:read_expenses:data/spending_data.csv' in calls:
@@ -290,19 +290,19 @@ def test_task10_module2():
             if (isinstance(x, ast.FunctionDef) and
                     x.name == 'main'):
                 for y in x.body:
-                    if (isinstance(y, ast.For) and 
-                        isinstance(y.iter, ast.Attribute) and 
+                    if (isinstance(y, ast.For) and
+                        isinstance(y.iter, ast.Attribute) and
                         y.iter.value.id == 'expenses' and
                         y.iter.attr == 'list'):
                         for_expenses_found = True
                         calls = utils.get_calls_from_child(y)
                         if 'myBudgetList:append:expense:amount' in calls:
                             append_call_found = True
-                
+
     except Exception as e:
             # print('for_loop e = ' + str(e))
             pass
-    
+
     assert for_expenses_found, 'Did you create a for loop that iterates `expenses.list`?'
     assert append_call_found, 'Did you call `append(expense.amount)` on `myBudgetList`?'
 
@@ -316,7 +316,7 @@ def test_task11_module2():
             if (isinstance(x, ast.FunctionDef) and
                     x.name == 'main'):
                 for y in x.body:
-                    if (isinstance(y, ast.Expr) and 
+                    if (isinstance(y, ast.Expr) and
                         isinstance(y.value, ast.Call) and
                         hasattr(y.value.func, 'id') and
                         y.value.func.id == 'print'):
@@ -324,11 +324,11 @@ def test_task11_module2():
                         # print("print calls = " + str(calls))
                         if 'print:The count of all expenses: :str:len:myBudgetList' in calls:
                             print_call_found = True
-                
+
     except Exception as e:
             # print('for_loop e = ' + str(e))
             pass
-    
+
     assert print_call_found, 'Did you print `\'The count of all expenses: \'` concatenated with `str(len(myBudgetList))`?'
 
 # Run main
